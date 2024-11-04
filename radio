@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Author: Ayush Jayaswal
+# Website: ayusjayaswal.github.io
+#
+declare -A station
+station[Western Classical]="https://live.musopen.org:8085/streamvbr0?1729888126216"
+station[BBC World Service]="https://stream.live.vc.bbcmedia.co.uk/bbc_world_service"
+station[New Hindi Songs]="https://server.mixify.in/listen/new_hits/radio.mp3"
+station[English Songs]="https://server.mixify.in/listen/english/radio.mp3"
+station[Bangla Songs]="https://server.mixify.in/listen/bangla/radio.mp3"
+station[Hindi Evergreen]="https://server.mixify.in/listen/evergreen/radio.mp3"
+station[Hindi Songs]="https://server.mixify.in/listen/listen/radio.mp3"
+
+setstat=$(printf '%s\n' "${!station[@]}" | sort | dmenu -i -l 30)
+
+if [ "$setstat" ]; then
+    chosen=$(printf '%s\n' "${station["${setstat}"]}")
+    mpv "$chosen"
+else
+    echo "Program Terminated" && exit 0
+fi
+
