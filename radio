@@ -1,22 +1,49 @@
 #!/usr/bin/env bash
 # Author: Ayush Jayaswal
 # Website: ayusjayaswal.github.io
-#
-declare -A station
-station[Western Classical]="https://live.musopen.org:8085/streamvbr0?1729888126216"
-station[BBC World Service]="https://stream.live.vc.bbcmedia.co.uk/bbc_world_service"
-station[New Hindi Songs]="https://server.mixify.in/listen/new_hits/radio.mp3"
-station[English Songs]="https://server.mixify.in/listen/english/radio.mp3"
-station[Bangla Songs]="https://server.mixify.in/listen/bangla/radio.mp3"
-station[Hindi Evergreen]="https://server.mixify.in/listen/evergreen/radio.mp3"
-station[Hindi Songs]="https://server.mixify.in/listen/listen/radio.mp3"
+
+CONFIG_FILE="$HOME/.config/radio/config.ini"
+
+if ! command -v dmenu >/dev/null 2>&1; then
+    echo "Error: dmenu is not installed. Please install it or use an alternative menu tool."
+    exit 1
+fi
+
+if ! command -v mpv >/dev/null 2>&1; then
+    echo "Error: mpv is not installed. Please install it or use an alternative media player."
+    exit 1
+fi
+
+if [[ -f "$CONFIG_FILE" ]]; then
+    declare -A station
+    while read -r line; do
+        if [[ $line =~ ^([^=]+)=(.*) ]]; then
+            station["${BASH_REMATCH[1]}"]="${BASH_REMATCH[2]}"
+        fi
+    done < "$CONFIG_FILE"
+else
+    echo "Error: Configuration file '$CONFIG_FILE' not found."
+    exit 1
+fi
+
+if [[ $1 == "-q" ]]; then
+    pids=$(pgrep -f "mpv.*--input-ipc-server=/tmp/mpv_radio_ipc")
+    if [[ -n $pids ]]; then
+        echo "Stopping radio stations..."
+        kill $pids
+        echo "Radio stations have been stopped."
+    else
+        echo "No radio stations are currently playing."
+    fi
+    exit 0
+fi
 
 setstat=$(printf '%s\n' "${!station[@]}" | sort | dmenu -i -l 30)
-
-if [ "$setstat" ]; then
-    chosen=$(printf '%s\n' "${station["${setstat}"]}")
-    mpv "$chosen"
+if [ -n "$setstat" ]; then
+    chosen=${station["$setstat"]}
+    echo "Playing '$setstat', Please Wait..."
+    mpv --no-terminal --quiet --loop --input-ipc-server=/tmp/mpv_radio_ipc "$chosen" &
+    echo $! > "/tmp/mpv_radio_$setstat.pid"
 else
     echo "Program Terminated" && exit 0
 fi
-
