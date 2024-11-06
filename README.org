@@ -1,5 +1,5 @@
 * Just a Radio for Linux
-Stop panicking about what music to listen... Just listen tune in to a random Radio Station.
+Stop panicking about what music to listen... Just tune in to a random Radio Station.
 ** TODOS:
 	+ create a suitable gui that is minimall
 	+ create a repo of well known radio stations
@@ -9,8 +9,9 @@ Stop panicking about what music to listen... Just listen tune in to a random Rad
 *** Configuration
 As of now, only configuration you can do is to set the radio stations and their links in =$HOME/.config/radio/config.ini=
 *** Use Flags
+/Running without any flag plays a random Radio station/
 + =-l= 			to list radio available radio stations
-+ =-s "<station_name>"= to play a radio station present in -l
++ =-s "<station_name>"= to play a radio station present in config.ini
 + =-h= 			to view help 
 *** To run interactively from Unix terminal 
 #+begin_src sh
