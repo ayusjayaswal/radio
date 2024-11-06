@@ -1,0 +1,18 @@
+* Just a Radio for Linux
+Stop panicking about what music to listen... Just listen tune in to a random Radio Station.
+**TODOS:
+	+ create a suitable gui that is minimall
+	+ create a repo of well known radio stations
+** Dependencies 
+	* ffmpeg (for ffplay) : Most Probably already installed in your system.
+**Usage
+*** Configuration
+As of now, only configuration you can do is to set the radio stations and their links in =$HOME/.config/radio/config.ini=
+*** Use Flags
++ =-l= 			to list radio available radio stations
++ =-s "<station_name>"= to play a radio station present in -l
++ =-h= 			to view help 
+*** To run interactively from Unix terminal 
+#+begin_src sh
+radio -l | tail -n +2 | fzf | echo "\"$(awk '{$1=""; print substr($0,2)}')\"" | xargs -r radio -s
+#+end_src
