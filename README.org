@@ -26,7 +26,14 @@ Options:
   -s <station_name>  Play the specified station
   -h                 Display this help message
 
-*** To run interactively from Unix terminal 
+*** To run interactively 
+from Unix terminal... 
 #+begin_src sh
-radio -l | fzf | echo "\"$(awk '{$1=""; print substr($0,2)}')\"" | xargs -r radio -s
+radio -s "$(radio -l | fzf)"
 #+end_src
+or if you fancy dmenu
+#+begin_src sh
+radio -s "$(radio -l | dmenu -l 10)"
+#+end_src
+
+
