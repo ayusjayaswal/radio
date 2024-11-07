@@ -1,4 +1,4 @@
-* Just a Radio for Linux
+* Just a Radio, nothing more nothing less
 Stop panicking about what music to listen... Just tune in to a random Radio Station.
 ** TODOS:
 	+ create a minimal gui frontend
